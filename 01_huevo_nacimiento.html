@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diplodocus – El Huevo</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root {
+    --sand: #f5e6c8;
+    --amber: #c8873a;
+    --moss: #4a6741;
+    --cream: #faf3e0;
+    --dark: #1a1207;
+    --shell: #e8c98a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--cream);
+    font-family: 'Lora', serif;
+    color: var(--dark);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  /* Fondo textura arena */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 80%, rgba(200,135,58,0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(74,103,65,0.12) 0%, transparent 50%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .card {
+    position: relative;
+    z-index: 1;
+    background: var(--sand);
+    border: 3px solid var(--amber);
+    border-radius: 4px;
+    padding: 40px 36px;
+    max-width: 480px;
+    width: 92%;
+    box-shadow: 8px 8px 0 var(--amber), 16px 16px 0 rgba(200,135,58,0.2);
+    animation: appear 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes appear {
+    from { opacity: 0; transform: translateY(30px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .stage-badge {
+    display: inline-block;
+    background: var(--moss);
+    color: #fff;
+    font-family: 'Lora', serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 2px;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    line-height: 1.1;
+    color: var(--dark);
+    margin-bottom: 6px;
+  }
+
+  h1 span {
+    font-style: italic;
+    color: var(--amber);
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+    color: #6b5a3e;
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+
+  /* Ilustración SVG del huevo */
+  .dino-art {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 28px;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .info-item {
+    background: var(--cream);
+    border-left: 3px solid var(--amber);
+    padding: 10px 14px;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .info-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--moss);
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+
+  .info-value {
+    font-size: 0.88rem;
+    color: var(--dark);
+    font-weight: 600;
+  }
+
+  .description {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #3d2e14;
+    margin-bottom: 28px;
+    padding: 16px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 4px;
+    border: 1px solid rgba(200,135,58,0.25);
+  }
+
+  .qr-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-top: 20px;
+    border-top: 2px dashed var(--amber);
+  }
+
+  #qrcode canvas, #qrcode img {
+    border: 4px solid var(--dark) !important;
+    border-radius: 4px;
+  }
+
+  .qr-info {
+    flex: 1;
+  }
+
+  .qr-label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--moss);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .qr-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+  }
+
+  .qr-url {
+    font-size: 0.72rem;
+    color: #7a6040;
+    word-break: break-all;
+  }
+
+  .footer-num {
+    position: absolute;
+    bottom: 14px;
+    right: 18px;
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 700;
+    color: rgba(200,135,58,0.12);
+    line-height: 1;
+    user-select: none;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="stage-badge">Etapa 1 de 3 · Jurásico Tardío</div>
+
+  <h1>El <span>Huevo</span></h1>
+  <p class="subtitle">Origen y nacimiento del Diplodocus — 154 millones de años atrás</p>
+
+  <!-- Ilustración SVG -->
+  <div class="dino-art">
+    <svg width="200" height="160" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Nido de tierra -->
+      <ellipse cx="100" cy="138" rx="80" ry="14" fill="#b8924a" opacity="0.4"/>
+      <ellipse cx="100" cy="135" rx="70" ry="10" fill="#c8a060" opacity="0.5"/>
+      <!-- Hojas del nido -->
+      <path d="M30 135 Q50 115 40 135" stroke="#4a6741" stroke-width="2" fill="#6a8f5a" opacity="0.6"/>
+      <path d="M160 135 Q155 115 170 130" stroke="#4a6741" stroke-width="2" fill="#6a8f5a" opacity="0.6"/>
+      <path d="M20 138 Q45 120 35 138" stroke="#4a6741" stroke-width="1.5" fill="#5a7f4a" opacity="0.5"/>
+      <!-- Huevo principal -->
+      <ellipse cx="100" cy="110" rx="36" ry="44" fill="#e8c98a" stroke="#c8873a" stroke-width="2.5"/>
+      <!-- Textura del huevo -->
+      <ellipse cx="100" cy="110" rx="36" ry="44" fill="url(#egg-texture)" opacity="0.3"/>
+      <defs>
+        <radialGradient id="egg-texture" cx="35%" cy="30%">
+          <stop offset="0%" stop-color="#fff" stop-opacity="0.6"/>
+          <stop offset="100%" stop-color="#c8873a" stop-opacity="0.2"/>
+        </radialGradient>
+      </defs>
+      <!-- Grieta en el huevo -->
+      <path d="M92 80 L88 92 L95 98 L90 110 L98 118" stroke="#a06020" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.7"/>
+      <path d="M92 80 L97 86 L93 95" stroke="#a06020" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+      <!-- Pequeño diplodocus asomando -->
+      <g transform="translate(96,72)">
+        <!-- cuerpo bebé -->
+        <ellipse cx="8" cy="0" rx="10" ry="7" fill="#7aad6a" stroke="#4a6741" stroke-width="1.5"/>
+        <!-- cabeza -->
+        <circle cx="18" cy="-3" r="5.5" fill="#7aad6a" stroke="#4a6741" stroke-width="1.5"/>
+        <!-- ojos -->
+        <circle cx="20" cy="-4.5" r="1.2" fill="#1a1207"/>
+        <circle cx="20.4" cy="-4.9" r="0.4" fill="white"/>
+        <!-- cuello -->
+        <path d="M13 -3 Q16 -6 18 -8.5" stroke="#4a6741" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <!-- colita -->
+        <path d="M-2 1 Q-10 4 -14 0" stroke="#4a6741" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      </g>
+      <!-- Huevos de fondo -->
+      <ellipse cx="55" cy="128" rx="16" ry="20" fill="#d4b070" stroke="#c8873a" stroke-width="1.5" opacity="0.8"/>
+      <ellipse cx="148" cy="125" rx="14" ry="18" fill="#dbb878" stroke="#c8873a" stroke-width="1.5" opacity="0.8"/>
+      <!-- Puntos decorativos -->
+      <circle cx="55" cy="125" r="1.5" fill="#a06020" opacity="0.5"/>
+      <circle cx="148" cy="122" r="1.5" fill="#a06020" opacity="0.5"/>
+    </svg>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-item">
+      <div class="info-label">Período</div>
+      <div class="info-value">Jurásico Tardío</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">Incubación</div>
+      <div class="info-value">~65–82 días</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">Tamaño del huevo</div>
+      <div class="info-value">~30 cm diámetro</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">Tamaño al nacer</div>
+      <div class="info-value">~1 metro</div>
+    </div>
+  </div>
+
+  <div class="description">
+    Los huevos del <em>Diplodocus</em> eran depositados en nidos poco profundos cavados en la tierra. Al nacer, las crías medían apenas 1 metro de largo — nada comparado con los 27 metros que alcanzarían de adultos. Desde el primer día, debían valerse por sí mismas en los bosques del Jurásico.
+  </div>
+
+  <div class="qr-section">
+    <div id="qrcode"></div>
+    <div class="qr-info">
+      <div class="qr-label">Escanea para más info</div>
+      <div class="qr-title">El Huevo</div>
+      <div class="qr-url" id="qr-url-text">wikipedia.org/wiki/Diplodocus</div>
+    </div>
+  </div>
+
+  <div class="footer-num">01</div>
+</div>
+
+<script>
+  const url = "https://es.wikipedia.org/wiki/Diplodocus";
+  document.getElementById("qr-url-text").textContent = url;
+  new QRCode(document.getElementById("qrcode"), {
+    text: url,
+    width: 100,
+    height: 100,
+    colorDark: "#1a1207",
+    colorLight: "#f5e6c8",
+    correctLevel: QRCode.CorrectLevel.H
+  });
+</script>
+</body>
+</html>
